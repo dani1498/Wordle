@@ -17,7 +17,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
-//simon feb 25 - march 25 - April 17-20 2022
+
 public class GUI extends JFrame implements ActionListener {
 
     private static JPanel panel;
@@ -34,7 +34,7 @@ public class GUI extends JFrame implements ActionListener {
     public static final String ANSI_GREEN = "\u001B[32m";
 
     static String[] possibleWords;
-    static int tries;
+    static int intentos;
     static char[] input;
     static long startTime;
     static char[] answer;
@@ -103,7 +103,7 @@ public class GUI extends JFrame implements ActionListener {
         }
 
         startTime = System.currentTimeMillis();
-        tries = 0;
+        intentos = 0;
         System.out.println("Wordle: Escribe una palabra de 5 letras");
         answerChoosen = ReturnRandomWord();
         answer = new char[5];
@@ -114,13 +114,13 @@ public class GUI extends JFrame implements ActionListener {
     
     public static void EndWordle() {
         System.out.println("Wordle: La respuesta era: " + new String(answerChoosen));
-        System.out.println("Wordle: Has encontrado la palabra en " + ((System.currentTimeMillis() - startTime) / 1000) + " segundos y " + tries + " intentos.");
+        System.out.println("Wordle: Has encontrado la palabra en " + ((System.currentTimeMillis() - startTime) / 1000) + " segundos y " + intentos + " intentos.");
 
         userText1.setEnabled(false);
         userText1.setVisible(false);
 
         if (!done) stats.setText("<html><font size='1' color=red> " + "La respuesta era: " + new String(answerChoosen) + ". Has gastado \n " + ((System.currentTimeMillis() - startTime) / 1000) + " segundos (:" + "</font> <font");
-        else  stats.setText("<html><font size='1' color=green> " + "Has encontrado la palabra en \n " + ((System.currentTimeMillis() - startTime) / 1000) + " segundos y " + tries + " intentos." + "</font> <font");
+        else  stats.setText("<html><font size='1' color=green> " + "Has encontrado la palabra en \n " + ((System.currentTimeMillis() - startTime) / 1000) + " segundos y " + intentos + " intentos." + "</font> <font");
     }
 
     @Override
@@ -135,7 +135,7 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public static void ButtonPressed(){
-        userText1.setBounds(40, 80 + ((tries + 1) * 25), 80, 25);
+        userText1.setBounds(40, 80 + ((intentos + 1) * 25), 80, 25);
 
         String userInput = userText1.getText();
         int[] colorOfLetters = PlayWordle(userInput);
@@ -144,7 +144,7 @@ public class GUI extends JFrame implements ActionListener {
         for (int i : colorOfLetters) {
             if (i != 2) done = false;
         }
-        if (done || tries > 5) EndWordle();
+        if (done || intentos > 5) EndWordle();
 
         String[] numsToColors = new String[5];
         for (int i = 0; i < 5; i++) {
@@ -167,7 +167,7 @@ public class GUI extends JFrame implements ActionListener {
 
     public static int[] PlayWordle(String InputWordleWord) {
         done = false;
-        tries++;
+        intentos++;
 
         String R1 = InputWordleWord.toLowerCase();
 
@@ -185,7 +185,7 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public static void setNextLabel(String string){
-        labels[tries - 1].setText(string);
+        labels[intentos - 1].setText(string);
     }
 
     public static int[] ReturnColorOfLeters(char[] inputWord, char[] correctWord) {
